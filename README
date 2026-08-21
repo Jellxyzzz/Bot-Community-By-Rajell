@@ -6,8 +6,8 @@ Ini adalah Bot Discord dari Node JS yang bekerja untuk sebuah komunitas samp yan
 3. Masukan Bot Token Anda.
 4. Masukkan Aplication Id Bot anda.
 5. Ubah semua yang ada di dalam filenya
-6. Ubah nama 
-6. Jalankan Langsung bisa di gunakan.
+6. Ubah nama config.json.example menjadi config.json
+7. Jalankan Langsung bisa di gunakan.
 
 # LIST FITUR
 1. EMBED
