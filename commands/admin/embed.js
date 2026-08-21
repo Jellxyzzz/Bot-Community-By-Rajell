@@ -1,121 +1,143 @@
-const {
-  SlashCommandBuilder,
-  EmbedBuilder
+const { 
+    SlashCommandBuilder, 
+    PermissionFlagsBits, 
+    ContainerBuilder, 
+    TextDisplayBuilder, 
+    SeparatorBuilder, 
+    MediaGalleryBuilder,
+    MediaGalleryItemBuilder,
+    MessageFlags 
 } = require('discord.js');
 
-const { ADMIN_ROLE_ID } = require('../../config.json');
-
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('embed')
-    .setDescription('Membuat custom embed')
-
-    .addStringOption(option =>
-      option
-        .setName('judul')
-        .setDescription('Judul embed')
-        .setRequired(true)
-    )
-
-    .addStringOption(option =>
-      option
-        .setName('deskripsi')
-        .setDescription('Isi embed')
-        .setRequired(true)
-    )
-
-    .addStringOption(option =>
-      option
-        .setName('warna')
-        .setDescription('Warna HEX (#ff0000)')
-        .setRequired(false)
-    )
-
-    .addStringOption(option =>
-      option
-        .setName('foto')
-        .setDescription('URL gambar')
-        .setRequired(false)
-    )
-
-    .addStringOption(option =>
-      option
-        .setName('mention')
-        .setDescription('Pilih mention')
-        .setRequired(false)
-        .addChoices(
-          {
-            name: '@everyone',
-            value: 'everyone'
-          },
-          {
-            name: '@here',
-            value: 'here'
-          }
+    data: new SlashCommandBuilder()
+        .setName('embed')
+        .setDescription('Kelola container bot (Components V2)')
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('create')
+                .setDescription('Buat container baru')
+                .addStringOption(option => 
+                    option.setName('ukuran_judul')
+                        .setDescription('Pilih ukuran judul')
+                        .setRequired(true)
+                        .addChoices(
+                            { name: 'Besar (H1)', value: '#' },
+                            { name: 'Sedang (H2)', value: '##' },
+                            { name: 'Kecil (H3)', value: '###' }
+                        )
+                )
+                .addStringOption(option => option.setName('judul').setDescription('Judul container').setRequired(true))
+                .addStringOption(option => option.setName('isi').setDescription('Isi container').setRequired(true))
+                .addAttachmentOption(option => option.setName('gambar1').setDescription('Gambar utama').setRequired(false))
         )
-    ),
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('edit')
+                .setDescription('Edit container yang sudah ada')
+                .addStringOption(option => option.setName('id').setDescription('ID pesan container').setRequired(true))
+                .addStringOption(option => 
+                    option.setName('ukuran_judul')
+                        .setDescription('Pilih ukuran judul baru')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: 'Besar (H1)', value: '#' },
+                            { name: 'Sedang (H2)', value: '##' },
+                            { name: 'Kecil (H3)', value: '###' }
+                        )
+                )
+                .addStringOption(option => option.setName('judul').setDescription('Judul baru').setRequired(false))
+                .addStringOption(option => option.setName('isi').setDescription('Isi baru').setRequired(false))
+                .addAttachmentOption(option => option.setName('gambar1').setDescription('Gambar utama baru').setRequired(false))
+        ),
 
-  async execute(interaction) {
+    async execute(interaction) {
+        const subcommand = interaction.options.getSubcommand();
 
-    const hasAdminRole =
-      ADMIN_ROLE_ID &&
-      interaction.member.roles.cache.has(ADMIN_ROLE_ID);
+        if (subcommand === 'create') {
+            const ukuranJudul = interaction.options.getString('ukuran_judul');
+            const judul = interaction.options.getString('judul');
+            const isi = interaction.options.getString('isi');
+            const gambar1 = interaction.options.getAttachment('gambar1');
 
-    if (!hasAdminRole) {
-      return interaction.reply({
-        content: 'â Kamu tidak memiliki izin menggunakan command ini.',
-        ephemeral: true
-      });
-    }
+            const container = new ContainerBuilder()
+                .addTextDisplayComponents(
+                    new TextDisplayBuilder().setContent(`${ukuranJudul} ${judul}`)
+                )
+                .addSeparatorComponents(new SeparatorBuilder())
+                .addTextDisplayComponents(
+                    new TextDisplayBuilder().setContent(isi)
+                );
 
-    const judul = interaction.options.getString('judul');
-    const deskripsi = interaction.options.getString('deskripsi');
-    const warnaInput =
-      interaction.options.getString('warna') || '#3498db';
-    const foto =
-      interaction.options.getString('foto');
-    const mentionType =
-      interaction.options.getString('mention');
+            if (gambar1) {
+                container.addMediaGalleryComponents(
+                    new MediaGalleryBuilder().addItems(
+                        new MediaGalleryItemBuilder().setURL(gambar1.url)
+                    )
+                );
+            }
 
-    let warnaHex = parseInt(
-      warnaInput.replace('#', ''),
-      16
-    );
+            await interaction.deferReply({ ephemeral: true });
+            
+            await interaction.channel.send({ 
+                components: [container], 
+                flags: MessageFlags.IsComponentsV2 
+            });
 
-    if (isNaN(warnaHex)) {
-      warnaHex = 0x3498db;
-    }
+            return await interaction.editReply({ content: '✅ Container berhasil dibuat!' });
+        }
 
-    const embed = new EmbedBuilder()
-      .setTitle(judul)
-      .setDescription(deskripsi)
-      .setColor(warnaHex)
-      .setTimestamp();
+        if (subcommand === 'edit') {
+            const messageId = interaction.options.getString('id');
+            const ukuranJudul = interaction.options.getString('ukuran_judul') || '#';
+            const judul = interaction.options.getString('judul');
+            const isi = interaction.options.getString('isi');
+            const gambar1 = interaction.options.getAttachment('gambar1');
 
-    if (foto) {
-      embed.setImage(foto);
-    }
+            await interaction.deferReply({ ephemeral: true });
 
-    let content;
+            try {
+                const targetMessage = await interaction.channel.messages.fetch(messageId);
 
-    if (mentionType === 'everyone') {
-      content = '@everyone';
-    } else if (mentionType === 'here') {
-      content = '@here';
-    }
+                if (targetMessage.author.id !== interaction.client.user.id) {
+                    return await interaction.editReply({ content: '❌ Pesan tersebut bukan milik bot ini!' });
+                }
 
-    await interaction.deferReply({
-      ephemeral: true
-    });
+                const updatedContainer = new ContainerBuilder();
 
-    await interaction.channel.send({
-      content,
-      embeds: [embed],
-      allowedMentions: {
-        parse: ['everyone']
-      }
-    });
+                if (judul) {
+                    updatedContainer.addTextDisplayComponents(
+                        new TextDisplayBuilder().setContent(`${ukuranJudul} ${judul}`)
+                    );
+                    updatedContainer.addSeparatorComponents(new SeparatorBuilder());
+                }
 
-    await interaction.deleteReply();
-  }
+                if (isi) {
+                    updatedContainer.addTextDisplayComponents(
+                        new TextDisplayBuilder().setContent(isi)
+                    );
+                }
+
+                if (gambar1) {
+                    updatedContainer.addMediaGalleryComponents(
+                        new MediaGalleryBuilder().addItems(
+                            new MediaGalleryItemBuilder().setURL(gambar1.url)
+                        )
+                    );
+                }
+
+                await targetMessage.edit({ 
+                    components: [updatedContainer], 
+                    flags: MessageFlags.IsComponentsV2 
+                });
+
+                return await interaction.editReply({ content: '✅ Container berhasil diperbarui!' });
+
+            } catch (error) {
+                console.error(error);
+                return await interaction.editReply({ content: '❌ Gagal mengedit pesan. Pastikan ID pesan valid dan berada di channel ini.' });
+            }
+        }
+    },
 };
