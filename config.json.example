@@ -3,14 +3,14 @@
     "clientId": "ID_APP_BOT",
     "statusChannelId": "ID_STATUS_BOT",
     "ADMIN_ROLE_ID": "ID_ROLE_ADMIN",
-    "NGURUS_ROLE_ID": "ID_ROLE_PENGGURUS",
+    "PENGURUS_ROLE_ID": "ID_ROLE_PENGGURUS",
     "ChannelLogMembers": "ID_CHANNEL_LOGS_MEMBER",
     "ChannelLogBlacklist": "ID_CHANNEL_BLACKLIST_MEMBER",
-    "CategoryTicketIdAndro": "ID_CATEGORY_ANDRO", 
-    "CategoryTicketIdPc": "ID_CATEGORY_PC",
+    "ChannelArchivedRegister": "ID_CHANNEL_ARCHIVED",
+    "ThreadPcId": "ID_THREAD_PC",
+    "ThreadAndroId": "ID_THREAD_ANDRO",
     "ChannelLogTicketId": "ID_CHANNEL_LOG_TICKET", 
-    "developerIds": "ID_AKUN_DISCORD",
-    "FOUNDER_ROLE_ID": "ID_ROLE_FOUNDER"
+    "developerIds": "ID_AKUN_DISCORD"
 
 
 }
