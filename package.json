@@ -1,0 +1,9 @@
+{
+  "name": "Rajell-commun-bot",
+  "version": "1.0.0",
+  "description": "Bot khusus untuk community samp",
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7"
+  }
+}
