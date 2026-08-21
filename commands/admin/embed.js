@@ -63,7 +63,7 @@ module.exports = {
 
     if (!hasAdminRole) {
       return interaction.reply({
-        content: '❌ Kamu tidak memiliki izin menggunakan command ini.',
+        content: 'â Kamu tidak memiliki izin menggunakan command ini.',
         ephemeral: true
       });
     }
