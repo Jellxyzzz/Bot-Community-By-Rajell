@@ -42,11 +42,11 @@ module.exports = {
         const logChannel = interaction.guild.channels.cache.get(config.ChannelLogBlacklist);
 
         try {
-            // ─── URL GAMBAR BANNER BLACKLIST DI ATAS ──────────────────────
+            // âââ URL GAMBAR BANNER BLACKLIST DI ATAS ââââââââââââââââââââââ
             // Ganti URL di bawah ini dengan link gambar banner blacklist Anda
             const imageUrl = 'https://cdn.imageurlgenerator.com/uploads/24bf468b-49da-4eef-b382-56334e0ed209.png'; 
 
-            // ─── Membuat Container V2 ──────────────────────────────────
+            // âââ Membuat Container V2 ââââââââââââââââââââââââââââââââââ
             const container = new ContainerBuilder();
 
             // Memasukkan gambar ke bagian paling atas Container
@@ -75,13 +75,13 @@ module.exports = {
                     flags: MessageFlags.IsComponentsV2
                 });
             } else {
-                console.warn("⚠️ Warning: ChannelLogBlacklist tidak ditemukan atau ID di config.json salah.");
+                console.warn("â ï¸ Warning: ChannelLogBlacklist tidak ditemukan atau ID di config.json salah.");
             }
 
             // Optional: Jika Anda ingin bot otomatis memberikan role blacklist atau melakukan kick/ban, silakan tambahkan kodenya di sini.
 
             await interaction.reply({
-                content: `✅ Berhasil mencatat blacklist untuk member ${memberUser.tag}.`,
+                content: `â Berhasil mencatat blacklist untuk member ${memberUser.tag}.`,
                 ephemeral: true
             });
 
@@ -90,7 +90,7 @@ module.exports = {
 
             if (!interaction.replied && !interaction.deferred) {
                 await interaction.reply({
-                    content: '❌ Terjadi error saat memproses blacklist.',
+                    content: 'â Terjadi error saat memproses blacklist.',
                     ephemeral: true
                 });
             }
