@@ -68,7 +68,7 @@ module.exports = {
 
                 if (member.roles.cache.has(role.id)) {
                     return interaction.reply({
-                        content: '❌ Member sudah memiliki role tersebut.',
+                        content: 'â Member sudah memiliki role tersebut.',
                         ephemeral: true
                     });
                 }
@@ -81,7 +81,7 @@ module.exports = {
 
                 if (!member.roles.cache.has(role.id)) {
                     return interaction.reply({
-                        content: '❌ Member tidak memiliki role tersebut.',
+                        content: 'â Member tidak memiliki role tersebut.',
                         ephemeral: true
                     });
                 }
@@ -89,11 +89,11 @@ module.exports = {
                 await member.roles.remove(role);
             }
 
-            // ─── URL GAMBAR BANNER DI ATAS ──────────────────────────────
+            // âââ URL GAMBAR BANNER DI ATAS ââââââââââââââââââââââââââââââ
             // Ganti URL di bawah ini dengan link gambar banner Anda (misal upload ke channel Discord lalu copy link-nya)
             const imageUrl = 'https://cdn.imageurlgenerator.com/uploads/8bfd69f5-8287-4df9-a604-06672524aba7.png'; 
 
-            // ─── Membuat Container V2 ──────────────────────────────────
+            // âââ Membuat Container V2 ââââââââââââââââââââââââââââââââââ
             const container = new ContainerBuilder();
 
             // Memasukkan gambar ke bagian paling atas Container
@@ -122,14 +122,14 @@ module.exports = {
                     flags: MessageFlags.IsComponentsV2
                 });
             } else {
-                console.warn("⚠️ Warning: logChannel tidak ditemukan atau ID di config.json salah.");
+                console.warn("â ï¸ Warning: logChannel tidak ditemukan atau ID di config.json salah.");
             }
 
             await interaction.reply({
                 content:
                     aksi === 'promote'
-                        ? `✅ Berhasil memberikan ${role} kepada ${member}.`
-                        : `✅ Berhasil menghapus ${role} dari ${member}.`,
+                        ? `â Berhasil memberikan ${role} kepada ${member}.`
+                        : `â Berhasil menghapus ${role} dari ${member}.`,
                 ephemeral: true
             });
 
@@ -138,7 +138,7 @@ module.exports = {
 
             if (!interaction.replied && !interaction.deferred) {
                 await interaction.reply({
-                    content: '❌ Terjadi error saat memproses role.',
+                    content: 'â Terjadi error saat memproses role.',
                     ephemeral: true
                 });
             }
