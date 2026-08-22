@@ -62,10 +62,13 @@ module.exports = {
             const gambar1 = interaction.options.getAttachment('gambar1');
 
             const container = new ContainerBuilder()
+                // Separator atas dihapus langsung mulai dari Judul
                 .addTextDisplayComponents(
                     new TextDisplayBuilder().setContent(`${ukuranJudul} ${judul}`)
                 )
-                .addSeparatorComponents(new SeparatorBuilder())
+                .addSeparatorComponents(
+                    new SeparatorBuilder().setDivider(true)
+                )
                 .addTextDisplayComponents(
                     new TextDisplayBuilder().setContent(isi)
                 );
@@ -77,6 +80,11 @@ module.exports = {
                     )
                 );
             }
+
+            // Separator Bawah (Garis Panjang) tetap ada
+            container.addSeparatorComponents(
+                new SeparatorBuilder().setDivider(true)
+            );
 
             await interaction.deferReply({ ephemeral: true });
             
@@ -106,11 +114,15 @@ module.exports = {
 
                 const updatedContainer = new ContainerBuilder();
 
+                // Separator atas dihapus pada mode edit
+
                 if (judul) {
                     updatedContainer.addTextDisplayComponents(
                         new TextDisplayBuilder().setContent(`${ukuranJudul} ${judul}`)
                     );
-                    updatedContainer.addSeparatorComponents(new SeparatorBuilder());
+                    updatedContainer.addSeparatorComponents(
+                        new SeparatorBuilder().setDivider(true)
+                    );
                 }
 
                 if (isi) {
@@ -126,6 +138,11 @@ module.exports = {
                         )
                     );
                 }
+
+                // Separator Bawah (Garis Panjang) tetap ada
+                updatedContainer.addSeparatorComponents(
+                    new SeparatorBuilder().setDivider(true)
+                );
 
                 await targetMessage.edit({ 
                     components: [updatedContainer], 
