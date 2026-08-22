@@ -62,10 +62,10 @@ module.exports = {
                 .addSeparatorComponents(new SeparatorBuilder())
                 .addTextDisplayComponents(
                     new TextDisplayBuilder().setContent(
-                        `Staff : ${interaction.user}\n`
-                        + `Nama : ${memberUser}\n`
-                        + `Discord ID : ${memberUser.id}\n`
-                        + `Reason : ${reason}`
+                        `> Staff : ${interaction.user}\n`
+                        + `> Nama : ${memberUser}\n`
+                        + `> Discord ID : ${memberUser.id}\n`
+                        + `> Reason : ${reason}`
                     )
                 );
 
