@@ -109,10 +109,10 @@ module.exports = {
                 .addSeparatorComponents(new SeparatorBuilder())
                 .addTextDisplayComponents(
                     new TextDisplayBuilder().setContent(
-                        `Staff : ${interaction.user}\n`
-                        + `Nama : ${member}\n`
-                        + `Keterangan : ${aksi === 'promote' ? `Promoted to ${role}` : `Demoted from ${role}`}\n`
-                        + `Catatan : ${reason}`
+                        `> Staff : ${interaction.user}\n`
+                        + `> Nama : ${member}\n`
+                        + `> Keterangan : ${aksi === 'promote' ? `Promoted to ${role}` : `Demoted from ${role}`}\n`
+                        + `> Catatan : ${reason}`
                     )
                 );
 
